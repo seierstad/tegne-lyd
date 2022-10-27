@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="no">
+        <title>tegne-lyd</title>
+        <script defer type="module" src="./tegne-lyd.js"></script>
+        <style>
+            canvas {
+                position: absolute;
+                left: 3rem;
+                top: 3rem;
+                z-index: -1;
+            }
+            #meta,
+            #vertical_lines {
+                pointer-events: none;
+            }
+        </style>
+	</head>
+    <body>
+    	<canvas id="tegning"></canvas>
+        <canvas id="meta"></canvas>
+        <canvas id="vertical_lines"></canvas>
+        <input type="range" min="0" max="30" step="0.01" value="1" id="rate" />
+    </body>
+</html>

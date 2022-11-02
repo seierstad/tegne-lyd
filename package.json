@@ -1,10 +1,22 @@
 {
+  "name": "tegne-lyd",
+  "version": "0.0.1",
+  "description": "tegne-lyd is a web page for playing back the contour of Gaustadtoppen as audio and messing it up",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "serve",
+    "lint": "eslint *.js"
+  },
   "dependencies": {
     "es-module-shims": "^1.6.2",
-    "tiff": "^5.0.3",
-    "util": "^0.12.5"
+    "htm": "^3.1.1",
+    "preact": "^10.11.2"
   },
   "devDependencies": {
-    "serve": "^14.0.1"
+    "eslint": "8.8.0",
+    "eslint-plugin-import": "2.25.4",
+    "htmllint": "0.8.0",
+    "serve": "^14.0.1",
+    "stylelint": "14.4.0"
   }
 }

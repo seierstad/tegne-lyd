@@ -20,7 +20,6 @@ const playButton = document.createElement("button");
 playButton.textContent = "play";
 document.body.appendChild(playButton);
 document.body.addEventListener("pointerdown", () => {
-  console.log("pointerdownhandler");
   if (audioCtx === null) {
     initAudio();
   }

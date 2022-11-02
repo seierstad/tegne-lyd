@@ -23,7 +23,7 @@ class CanvasWaveVisualization extends EventTarget {
 		this.container = document.createElement("div");
 		this.container.classList.add("visualization");
 		this.waveform = document.createElement("canvas");
-		this.waveformCtx = this.waveform.getContext("2d");
+		this.waveformCtx = this.waveform.getContext("2d", {alpha: false});
 		this.container.appendChild(this.waveform);
 		this.vertical = document.createElement("canvas");
 		this.vertical.id = "vertical_lines";
@@ -94,36 +94,40 @@ class CanvasWaveVisualization extends EventTarget {
 	}
 
 	setValueRange (start, data) {
-		const {min, max, sum} = this.getMeta(data);
-		const oldValues = this._values.splice(start, data.length, ...data);
-		const oldSum = oldValues.reduce((sum, value) => sum + value);
-		let updateNeeded = false;
+		if (start < this._values.length) {
 
-		if (min < this._min) {
-			this._min = min;
-			updateNeeded = true;
-		}
-		if (max > this._max) {
-			this._max = max;
-			updateNeeded = true;
-		}
-		if (sum !== oldSum) {
-			this._sum = this._sum - oldSum + sum;
-			this._mean = this._sum / this._values.length;
-			updateNeeded = true;
-		}
+			const {min, max, sum} = this.getMeta(data);
+			const oldValues = this._values.splice(start, data.length, ...data);
+			const oldSum = oldValues.reduce((sum, value) => sum + value);
+			let updateNeeded = false;
 
-		this.updateWaveformRange(start, data);
-		this.updateVerticalLinesRange(start, start + data.length);
-		if (updateNeeded) {
-			this.updateMeta;
-		}
-		const event = new CustomEvent("valuerange", {detail: {
-			start,
-			data: data.slice()
-		}});
+			if (min < this._min) {
+				this._min = min;
+				updateNeeded = true;
+			}
+			if (max > this._max) {
+				this._max = max;
+				updateNeeded = true;
+			}
+			if (sum !== oldSum) {
+				this._sum = this._sum - oldSum + sum;
+				this._mean = this._sum / this._values.length;
+				updateNeeded = true;
+			}
 
-		this.dispatchEvent(event);
+			this.updateWaveformRange(start, data);
+			this.updateVerticalLinesRange(start, start + data.length);
+
+			if (updateNeeded) {
+				this.updateMeta();
+			}
+			const event = new CustomEvent("valuerange", {detail: {
+				start,
+				data: data.slice()
+			}});
+
+			this.dispatchEvent(event);
+		}
 	}
 
 	drawImage (image) {
@@ -218,7 +222,6 @@ class CanvasWaveVisualization extends EventTarget {
 	}
 
 	pointerOutHandler (event) {
-	  console.log("pointer out!");
 	  this.pointerPressed = false;
 	  this.waveform.removeEventListener("pointermove", this.pointerMoveHandler);
 	}
@@ -257,16 +260,8 @@ class CanvasWaveVisualization extends EventTarget {
 	  this.metaCtx.beginPath();
 	  this.metaCtx.moveTo(0, integerMin);
 	  this.metaCtx.lineTo(this.width, integerMin);
-	  this.metaCtx.stroke();
-
-
-	  this.metaCtx.beginPath();
 	  this.metaCtx.moveTo(0, integerMean);
 	  this.metaCtx.lineTo(this.width, integerMean);
-	  this.metaCtx.stroke();
-
-
-	  this.metaCtx.beginPath();
 	  this.metaCtx.moveTo(0, integerMax);
 	  this.metaCtx.lineTo(this.width, integerMax);
 	  this.metaCtx.stroke();

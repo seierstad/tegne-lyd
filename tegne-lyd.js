@@ -54,10 +54,9 @@ const arrayToBuffer = (array, min, max) => {
     return buffer;
 };
 
-let play;
 let stop;
 
-play = () => {
+const play = () => {
     if (bufferSourceNode.buffer === null) {
         bufferSourceNode.buffer = arrayToBuffer(values, 0, height);
     }

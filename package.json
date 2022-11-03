@@ -5,11 +5,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "serve",
-    "lint": "eslint *.js --fix"
+    "lint": "eslint *.js *.json --fix"
   },
   "devDependencies": {
     "eslint": "8.8.0",
     "eslint-plugin-import": "2.25.4",
+    "eslint-plugin-json": "^3.1.0",
     "htmllint": "0.8.0",
     "serve": "^14.0.1",
     "stylelint": "14.4.0"

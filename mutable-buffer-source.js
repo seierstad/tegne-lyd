@@ -56,6 +56,15 @@ class MutableBufferSourceNode {
         return this._playbackRate;
     }
 
+    set detune (detune) {
+        this._detune = detune;
+        this.node.detune.value = this._detune;
+    }
+
+    get detune () {
+        return this._detune;
+    }
+
     switchNodes () {
         if (this.nextNode !== null) {
             this.nextNode.detune.value = this.node.detune.value;

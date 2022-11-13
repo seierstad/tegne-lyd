@@ -2,9 +2,15 @@
 
 import { MutableBufferSourceNode } from "./mutable-buffer-source.js";
 import { CanvasWaveVisualization } from "./canvas-visualization.js";
+import BetterBufferSourceNode from "./node_modules/flerkanals/better-buffer-source.js";
 
 const detuneInput = document.getElementById("detune");
 detuneInput.value = 0;
+
+const workletOptions = {
+    numberOfOutputs: 1,
+    outputChannelCount: [2]
+};
 
 const sampleFreq = 44100;
 
@@ -37,13 +43,14 @@ detuneResetButton.addEventListener("click", () => {
 });
 
 
-const initAudio = () => {
+async function initAudio () {
     audioCtx = new AudioContext();
-    bufferSourceNode = new MutableBufferSourceNode(audioCtx);
+    await audioCtx.audioWorklet.addModule("./node_modules/flerkanals/better-buffer-source-processor.js");
+    bufferSourceNode = new BetterBufferSourceNode(audioCtx, workletOptions);
     bufferSourceNode.loop = true;
     bufferSourceNode.connect(audioCtx.destination);
 
-};
+}
 
 document.body.addEventListener("pointerdown", () => {
     if (audioCtx === null) {

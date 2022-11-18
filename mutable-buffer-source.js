@@ -13,11 +13,8 @@ class MutableBufferSourceNode {
         this.bufferEndedHandler = this.bufferEnded.bind(this);
     }
 
-    start (timestamp = 0) {
-        if (this.playing) {
-            throw new Error("already playing!!!");
-        }
-        this.node.start(timestamp);
+    start () {
+        this.node.start();
         this.playing = true;
     }
 
